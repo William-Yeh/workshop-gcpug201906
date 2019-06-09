@@ -7,10 +7,12 @@ metadata:
     app: todo
     tier: backend
 spec:
-  type: NodePort
+  type: LoadBalancer
+  loadBalancerIP: 111.222.333.444  # external IP (ephemeral or static)
   ports:
-    - port: 80
-      nodePort: 30080
+    - name: http
+      port: 80
+      targetPort: 80
   selector:
     app: todo
     tier: backend
@@ -44,7 +46,7 @@ spec:
     spec:
       containers:
         - name: todoapi
-          image: todoapi:3.0
+          image: gcr.io/PROJECT_ID/todoapi:6.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80

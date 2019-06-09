@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config.cloud
+data: 
+  TODOAPI_HOST: "111.222.333.444"  # external IP (ephemeral or static) or domain name
+  TODOAPI_PORT: "80"
+  TODOAPI_PATH: "api/todo"

@@ -9,7 +9,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 80
+    - name: http
+      port: 80
       nodePort: 30000
   selector:
     app: todo
@@ -44,7 +45,7 @@ spec:
     spec:
       containers:
         - name: todofrontend
-          image: todofrontend:5.0
+          image: todofrontend
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80

@@ -5,31 +5,56 @@
 
 Store config in the environment (aka the [12-factor app](https://12factor.net/) principles).
 
-Public accessible endpoint for todoapi backend, defined in [config.local.yml](k8s/config.local.yml):
+Public accessible endpoint for todoapi backend, defined in [config.local.yml](k8s/local/config.local.yml):
 
  - `TODOAPI_HOST` : default = `localhost`
  - `TODOAPI_PORT` : default = `30080`
  - `TODOAPI_PATH` : default = `/api/todo`
 
+A version for deployment on the cloud is also provided in [config.cloud.yml](k8s/cloud/config.cloud.yml):
+
+ - `TODOAPI_HOST` : external IP (*static*) or domain name allocated by cloud providers.
+ - `TODOAPI_PORT` : default = `80`
+ - `TODOAPI_PATH` : default = `/api/todo`
+
 
 ## Architecture
 
-A *dockerized* web app with separate frontend and backend services on *Kubernetes* (locally).
+A *dockerized* web app with separate frontend and backend services on *Kubernetes* (both locally and on the cloud).
 
 **Frontend**
 
 Static HTML5 files and jQuery scripts.
 
-Web endpoint with port = `30000`.
+Local web endpoint:
+
+- host = `localhost`
+- port = `30000`
+
+Cloud web endpoint:
+
+- host = external IP (*ephemeral*) or domain name allocated by cloud providers
+- port = `80`
 
 **Backend**
 
 Backend program written in ASP.NET Core.
 
-API endpoint with port = `TODOAPI_PORT` (default = `30080`) and path = `TODOAPI_PATH` (default = `/api/todo`).
+Local API endpoint:
+
+- host = `localhost`
+- port = `TODOAPI_PORT` (default = `30080`)
+- path = `TODOAPI_PATH` (default = `/api/todo`)
+
+Cloud API endpoint:
+
+- host = `TODOAPI_HOST` (to be revised in [config.cloud.yml](k8s/cloud/config.cloud.yml)), external IP (*static*) or domain name allocated by cloud providers
+- port = `TODOAPI_PORT` (default = `80`)
+- path = `TODOAPI_PATH` (default = `/api/todo`)
 
 
-## Usage
+
+## Usage: the local case
 
 ### Preparation
 
@@ -42,36 +67,83 @@ API endpoint with port = `TODOAPI_PORT` (default = `30080`) and path = `TODOAPI_
 2. Load the ConfigMap content:
 
    ```
-   % kubectl apply -f k8s/config.local.yml  -n todo
+   % kubectl apply -f k8s/local/config.local.yml  -n todo
    % kubectl get configmaps  -n todo
    ```
 
-### Build
 
-1. Build images:
+### Build & Run
 
-   ```
-   % docker-compose build
-   ```
-
-
-### Run
-
-1. Start the backend:
+1. Using [Skaffold](https://skaffold.dev/) to streamline the build-and-run processes continuously:
 
    ```
-   % kubectl apply -f k8s/todoapi-service.yml -n todo
-   % kubectl get svc  -n todo
+   % skaffold dev  -n todo
    ```
 
-2. Start the frontend:
+2. Use your browser to visit the web app at http://localhost:30000
+
+
+
+## Usage: the cloud case
+
+### Preparation
+
+1. If you're using GKE, do the [gke-steps](gke-steps.md) first.
+
+2. Fill in correct image names by modifying the `PROJECT_ID` string in `skaffold.yaml` file:
 
    ```
-   % kubectl apply -f k8s/todofrontend-service.yml -n todo
-   % kubectl get svc  -n todo
+   % vi skaffold.yaml
    ```
 
-3. Use your browser to visit the web app at http://localhost:30000
+3. Fill in correct image names by modifying the `PROJECT_ID` string in manifest files, by either:
+
+   ```
+   % k8s/cloud/fix-name.py  write_your_real_project_id_here
+   ```
+
+   or by the following if there's no Python3 installed in your Windows:
+
+   ``` 
+   C:> docker run  -v %cd%:/mnt  python:3-alpine  \
+       /mnt/k8s/cloud/fix-name.py  write_your_real_project_id_here
+   ```
+
+4. Create a `todo` namespace for this app:
+
+   ```
+   % kubectl create ns todo
+   ```
+
+5. Load the ConfigMap content (GCP/GKE for example):
+
+   ```
+   # reserve a new static external IP address for backend todoapi
+   % gcloud compute addresses create todoapi --region=us-west1 --network-tier=PREMIUM
+
+   # make sure the static external IP address has been allocated
+   % gcloud compute addresses list
+
+   # replace the placeholder string "111.222.333.444" with the allocated IP address
+   % vi k8s/cloud/config.cloud.yml
+   % vi k8s/cloud/todoapi-service.yml
+
+   #...
+
+   # now, load it!
+   % kubectl apply -f k8s/cloud/config.cloud.yml  -n todo
+   % kubectl get configmaps  -n todo
+   ```
+
+### Build & Run
+
+1. Using [Skaffold](https://skaffold.dev/) to streamline the build-and-run process continuously:
+
+   ```
+   % skaffold run -p cloud  -n todo
+   ```
+
+2. Use your browser to visit the web app at http://FRONTEND_EXTERNAL_IP:80
 
 
 ## Kubernetes dashboard
@@ -97,6 +169,8 @@ Apache License 2.0.  See the [LICENSE](LICENSE) file.
 
 
 ## History
+
+**6.0**: Support Kubernetes on the cloud (GKE for example).
 
 **5.0**: Support ConfigMap and naming convention.
 
