@@ -83,6 +83,53 @@ Cloud API endpoint:
 2. Use your browser to visit the web app at http://localhost:30000
 
 
+### Canary
+
+1. See the number of pods in the deployments, including the *canary* part of the `todoapi` service:
+
+   ```
+   % kubectl get deployments -n todo
+   NAME             DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+   todoapi          3         3         3            3           14s
+   todoapi-canary   1         1         1            1           14s
+   todofrontend     3         3         3            3           14s
+   ```
+
+2. Scale the *canary* part from 1 to 2, either by:
+
+
+   ```
+   % kubectl scale --replicas=2 deployment/todoapi-canary  -n todo
+   ```
+
+   or by:
+
+   ```
+   % kubectl patch deployment todoapi-canary \
+       --patch "$(cat todoapi-canary-patch.yml)" -n todo
+   ```
+
+3. See again the number of pods in the deployments, including the *canary* part of the `todoapi` service:
+
+   ```
+   % kubectl get deployments -n todo
+   NAME             DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+   todoapi          3         3         3            3           2m
+   todoapi-canary   2         2         2            2           2m
+   todofrontend     3         3         3            3           2m
+
+   % kubectl get pods -n todo
+   NAME                              READY   STATUS    RESTARTS   AGE
+   todoapi-77f54c6f5d-9dkjh          1/1     Running   0          2m
+   todoapi-77f54c6f5d-grmfs          1/1     Running   0          2m
+   todoapi-77f54c6f5d-rdk7p          1/1     Running   0          2m
+   todoapi-canary-549dd65797-2rdxf   1/1     Running   0          2m
+   todoapi-canary-549dd65797-mn7db   1/1     Running   0          42s
+   todofrontend-67cc74bcbb-2zw4x     1/1     Running   0          2m
+   todofrontend-67cc74bcbb-w6fz5     1/1     Running   0          2m
+   todofrontend-67cc74bcbb-wdhmh     1/1     Running   0          2m
+   ```
+
 
 ## Usage: the cloud case
 
@@ -146,6 +193,53 @@ Cloud API endpoint:
 2. Use your browser to visit the web app at http://FRONTEND_EXTERNAL_IP:80
 
 
+### Canary
+
+1. See the number of pods in the deployments, including the *canary* part of the `todoapi` service:
+
+   ```
+   % kubectl get deployments -n todo
+   NAME             DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+   todoapi          3         3         3            3           14s
+   todoapi-canary   1         1         1            1           14s
+   todofrontend     3         3         3            3           14s
+   ```
+
+2. Scale the *canary* part from 1 to 2, either by:
+
+   ```
+   % kubectl scale --replicas=2 deployment/todoapi-canary  -n todo
+   ```
+
+   or by:
+
+   ```
+   % kubectl patch deployment todoapi-canary \
+       --patch "$(cat todoapi-canary-patch.yml)" -n todo
+   ```
+
+3. See again the number of pods in the deployments, including the *canary* part of the `todoapi` service:
+
+   ```
+   % kubectl get deployments -n todo
+   NAME             DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+   todoapi          3         3         3            3           2m
+   todoapi-canary   2         2         2            2           2m
+   todofrontend     3         3         3            3           2m
+
+   % kubectl get pods -n todo
+   NAME                              READY   STATUS    RESTARTS   AGE
+   todoapi-77f54c6f5d-9dkjh          1/1     Running   0          2m
+   todoapi-77f54c6f5d-grmfs          1/1     Running   0          2m
+   todoapi-77f54c6f5d-rdk7p          1/1     Running   0          2m
+   todoapi-canary-549dd65797-2rdxf   1/1     Running   0          2m
+   todoapi-canary-549dd65797-mn7db   1/1     Running   0          42s
+   todofrontend-67cc74bcbb-2zw4x     1/1     Running   0          2m
+   todofrontend-67cc74bcbb-w6fz5     1/1     Running   0          2m
+   todofrontend-67cc74bcbb-wdhmh     1/1     Running   0          2m
+   ```
+
+
 ## Kubernetes dashboard
 
 See [here](k8s-dashboard.md) if you'd like to use [Kubernetes dashboard](https://github.com/kubernetes/dashboard) locally.
@@ -169,6 +263,8 @@ Apache License 2.0.  See the [LICENSE](LICENSE) file.
 
 
 ## History
+
+**7.0**: Support canary release.
 
 **6.0**: Support Kubernetes on the cloud (GKE for example).
 

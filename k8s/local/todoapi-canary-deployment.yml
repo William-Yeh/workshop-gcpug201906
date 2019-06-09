@@ -1,33 +1,15 @@
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: todoapi
-  labels:
-    app: todo
-    tier: backend
-spec:
-  type: NodePort
-  ports:
-    - name: http
-      port: 80
-      nodePort: 30080
-  selector:
-    app: todo
-    tier: backend
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todoapi
+  name: todoapi-canary
   labels:
     app: todo
     tier: backend
-    track: stable
+    track: canary
 
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: todo
@@ -46,7 +28,7 @@ spec:
     spec:
       containers:
         - name: todoapi
-          image: todoapi:6.0
+          image: todoapi
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80

@@ -2,7 +2,7 @@ apiVersion: skaffold/v1beta11
 kind: Config
 build:
   artifacts:
-    - image: todoapi
+    - image: todoapi  # hot version
       context: TodoApi
     - image: todofrontend
       context: TodoFrontend
@@ -11,15 +11,15 @@ deploy:
   kubectl:
     manifests:
       - k8s/local/config.local.yml
-      - k8s/local/todoapi-service.yml
+      - k8s/local/todoapi-service.yml             # stable version
+      - k8s/local/todoapi-canary-deployment.yml   # hot version
       - k8s/local/todofrontend-service.yml
-
 
 profiles:
   - name: cloud
     build:
       artifacts:
-        - image: gcr.io/PROJECT_ID/todoapi
+        - image: gcr.io/PROJECT_ID/todoapi  # hot version
           context: TodoApi
         - image: gcr.io/PROJECT_ID/todofrontend
           context: TodoFrontend
@@ -27,7 +27,6 @@ profiles:
       kubectl:
         manifests:
           - k8s/cloud/config.cloud.yml
-          - k8s/cloud/todoapi-service.yml
+          - k8s/cloud/todoapi-service.yml            # stable version
+          - k8s/cloud/todoapi-canary-deployment.yml  # hot version  
           - k8s/cloud/todofrontend-service.yml
-
-

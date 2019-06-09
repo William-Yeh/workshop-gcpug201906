@@ -25,6 +25,7 @@ metadata:
   labels:
     app: todo
     tier: backend
+    track: stable
 
 spec:
   replicas: 3
