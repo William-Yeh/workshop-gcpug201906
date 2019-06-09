@@ -1,8 +1,14 @@
-# Todo sample in ASP.NET Core 2.2
+# Dockerized Todo sample in ASP.NET Core 2.2
 
 ## Architecture
 
-A monolithic web app written in [ASP.NET Core MVC](https://docs.microsoft.com/aspnet/core/mvc/overview).
+A *dockerized* monolithic web app written in [ASP.NET Core MVC](https://docs.microsoft.com/aspnet/core/mvc/overview).
+
+Base images used:
+
+ - .NET Core SDK: [`mcr.microsoft.com/dotnet/core/sdk`](https://hub.docker.com/_/microsoft-dotnet-core-sdk/)
+
+ - ASP.NET Core Runtime: [`mcr.microsoft.com/dotnet/core/aspnet`](https://hub.docker.com/_/microsoft-dotnet-core-aspnet/)
 
 
 ## Usage
@@ -10,16 +16,13 @@ A monolithic web app written in [ASP.NET Core MVC](https://docs.microsoft.com/as
 1. Compile:
 
    ```
-   C:\> dotnet restore
-
-   C:\> dotnet publish -o out
+   % docker-compose build
    ```
 
 2. Run:
 
    ```
-   C:\> cd out
-   C:\> dotnet TodoApi.dll --urls http://+:30000
+   % docker-compose up
    ```
 
 3. Use your browser to visit the web app at http://localhost:30000
@@ -39,11 +42,11 @@ The original source code to be used in this repo is packed in the `TodoApi-origi
 
 ## LICENSE
 
-MIT License.  See the [`LICENSE`](LICENSE) file.
+Apache License 2.0.  See the [LICENSE](LICENSE) file.
 
 
 ## History
 
+**2.0**: Dockerize the app with simple `Dockerfile` and `docker-compose.yml`.
+
 **1.0**: Extracted from Microsoft Docs.
-
-

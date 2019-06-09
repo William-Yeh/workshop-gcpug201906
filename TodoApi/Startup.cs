@@ -46,7 +46,7 @@ namespace TodoApi
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
         }
         #endregion

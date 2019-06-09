@@ -1,0 +1,11 @@
+version: '3'
+services:
+
+  #
+  # entry point
+  #
+  todo-app:
+    build: ./TodoApi
+    image: todoapi:2.0
+    ports:
+      - "30000:80"
