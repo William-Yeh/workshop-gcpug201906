@@ -55,6 +55,10 @@ Build images:
 3. Use your browser to visit the web app at http://localhost:30000
 
 
+## Kubernetes dashboard
+
+See [here](k8s-dashboard.md) if you'd like to use [Kubernetes dashboard](https://github.com/kubernetes/dashboard) locally.
+
 
 ## About the source code
 
@@ -74,6 +78,8 @@ Apache License 2.0.  See the [LICENSE](LICENSE) file.
 
 
 ## History
+
+**4.1**: Use Kubernetes dashboard.
 
 **4.0**: Support Kubernetes (locally).
 
