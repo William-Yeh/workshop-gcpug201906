@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config.local
+data: 
+  TODOAPI_HOST: "localhost"
+  TODOAPI_PORT: "30080"
+  TODOAPI_PATH: "api/todo"

@@ -1,5 +1,5 @@
 ﻿// <snippet_SiteJs>
-const API_ENDPOINT_URI = "http://localhost:30080/api/todo";
+const API_ENDPOINT_URI = "//{{TODOAPI_HOST}}:{{TODOAPI_PORT}}/{{TODOAPI_PATH}}";
 let todos = null;
 function getCount(data) {
   const el = $("#counter");
