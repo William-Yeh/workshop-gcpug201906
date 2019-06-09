@@ -1,5 +1,5 @@
 ﻿// <snippet_SiteJs>
-const uri = "api/todo";
+const API_ENDPOINT_URI = "http://localhost:30080/api/todo";
 let todos = null;
 function getCount(data) {
   const el = $("#counter");
@@ -22,7 +22,7 @@ $(document).ready(function() {
 function getData() {
   $.ajax({
     type: "GET",
-    url: uri,
+    url: API_ENDPOINT_URI,
     cache: false,
     success: function(data) {
       const tBody = $("#todos");
@@ -77,7 +77,7 @@ function addItem() {
   $.ajax({
     type: "POST",
     accepts: "application/json",
-    url: uri,
+    url: API_ENDPOINT_URI,
     contentType: "application/json",
     data: JSON.stringify(item),
     error: function(jqXHR, textStatus, errorThrown) {
@@ -94,7 +94,7 @@ function addItem() {
 function deleteItem(id) {
   // <snippet_AjaxDelete>
   $.ajax({
-    url: uri + "/" + id,
+    url: API_ENDPOINT_URI + "/" + id,
     type: "DELETE",
     success: function(result) {
       getData();
@@ -123,7 +123,7 @@ $(".my-form").on("submit", function() {
 
   // <snippet_AjaxPut>
   $.ajax({
-    url: uri + "/" + $("#edit-id").val(),
+    url: API_ENDPOINT_URI + "/" + $("#edit-id").val(),
     type: "PUT",
     accepts: "application/json",
     contentType: "application/json",

@@ -2,10 +2,22 @@ version: '3'
 services:
 
   #
-  # entry point
+  # frontend
   #
-  todo-app:
-    build: ./TodoApi
-    image: todoapi:2.0
+  todo:
+    build: ./TodoFrontend
+    image: todofrontend:3.0
     ports:
       - "30000:80"
+    depends_on:
+      - "todo-api"
+
+
+  #
+  # backend
+  #
+  todo-api:
+    build: ./TodoApi
+    image: todoapi:3.0
+    ports:
+      - "30080:80"

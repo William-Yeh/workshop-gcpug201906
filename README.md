@@ -1,14 +1,20 @@
-# Dockerized Todo sample in ASP.NET Core 2.2
+# Todo sample for Docker
 
 ## Architecture
 
-A *dockerized* monolithic web app written in [ASP.NET Core MVC](https://docs.microsoft.com/aspnet/core/mvc/overview).
+A *dockerized* web app with separate frontend and backend containers within the same host.
 
-Base images used:
+**Frontend**
 
- - .NET Core SDK: [`mcr.microsoft.com/dotnet/core/sdk`](https://hub.docker.com/_/microsoft-dotnet-core-sdk/)
+Static HTML5 files and jQuery scripts.
 
- - ASP.NET Core Runtime: [`mcr.microsoft.com/dotnet/core/aspnet`](https://hub.docker.com/_/microsoft-dotnet-core-aspnet/)
+Web endpoint with port = `30000`.
+
+**Backend**
+
+Backend program written in ASP.NET Core.
+
+API endpoint with port = `30080` and path = `/api/todo`.
 
 
 ## Usage
@@ -46,6 +52,8 @@ Apache License 2.0.  See the [LICENSE](LICENSE) file.
 
 
 ## History
+
+**3.0**: Separate frontend and backend into 2 distinct containers.
 
 **2.0**: Dockerize the app with simple `Dockerfile` and `docker-compose.yml`.
 

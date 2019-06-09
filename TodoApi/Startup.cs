@@ -44,6 +44,15 @@ namespace TodoApi
                 app.UseHsts();
             }
 
+            // handles CORS due to frontend/backend separation
+            // @see https://docs.microsoft.com/aspnet/core/security/cors
+            app.UseCors(builder =>
+                builder//.WithOrigins("http://example.com")
+                       .AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+                );
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
             //app.UseHttpsRedirection();
