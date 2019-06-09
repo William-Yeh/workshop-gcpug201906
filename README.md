@@ -1,8 +1,8 @@
-# Todo sample for Docker
+# Todo sample for Kubernetes
 
 ## Architecture
 
-A *dockerized* web app with separate frontend and backend containers within the same host.
+A *dockerized* web app with separate frontend and backend services on *Kubernetes* (locally).
 
 **Frontend**
 
@@ -19,19 +19,41 @@ API endpoint with port = `30080` and path = `/api/todo`.
 
 ## Usage
 
-1. Compile:
+### Preparation for environment
+
+Create a `todo` namespace for this app:
+
+```
+% kubectl create ns todo
+```
+
+### Build
+
+Build images:
+
+```
+% docker-compose build
+```
+
+
+### Run
+
+1. Start the backend:
 
    ```
-   % docker-compose build
+   % kubectl apply -f k8s/todoapi-service.yml -n todo
+   % kubectl get svc  -n todo
    ```
 
-2. Run:
+2. Start the frontend:
 
    ```
-   % docker-compose up
+   % kubectl apply -f k8s/todofrontend-service.yml -n todo
+   % kubectl get svc  -n todo
    ```
 
 3. Use your browser to visit the web app at http://localhost:30000
+
 
 
 ## About the source code
@@ -52,6 +74,8 @@ Apache License 2.0.  See the [LICENSE](LICENSE) file.
 
 
 ## History
+
+**4.0**: Support Kubernetes (locally).
 
 **3.0**: Separate frontend and backend into 2 distinct containers.
 
