@@ -146,14 +146,14 @@ Cloud API endpoint:
 3. Fill in correct image names by modifying the `PROJECT_ID` string in manifest files, by either:
 
    ```
-   % k8s/cloud/fix-name.py  write_your_real_project_id_here
+   % k8s/cloud/fix-name.py  $PROJECT_ID
    ```
 
    or by the following if there's no Python3 installed in your Windows:
 
    ``` 
    C:> docker run  -v %cd%:/mnt  python:3-alpine  \
-       /mnt/k8s/cloud/fix-name.py  write_your_real_project_id_here
+       /mnt/k8s/cloud/fix-name.py  $PROJECT_ID
    ```
 
 4. Create a `todo` namespace for this app:
