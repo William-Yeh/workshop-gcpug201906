@@ -1,5 +1,7 @@
 # Todo sample for Kubernetes
 
+!!! **NOTE**: A newer version of this workshop is available at https://github.com/William-Yeh/workshop-k8s201908
+
 
 ## Configurable settings
 
