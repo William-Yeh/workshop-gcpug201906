@@ -142,13 +142,13 @@ Cloud API endpoint:
 2. Fill in correct image names by modifying the `PROJECT_ID` string in `skaffold.yaml` file:
 
    ```
-   % vi skaffold.yaml
+   % sed -i "s/PROJECT_ID/$PROJECT_ID/g" skaffold.yaml
    ```
 
 3. Fill in correct image names by modifying the `PROJECT_ID` string in manifest files, by either:
 
    ```
-   % k8s/cloud/fix-name.py  write_your_real_project_id_here
+   % k8s/cloud/fix-name.py $PROJECT_ID
    ```
 
    or by the following if there's no Python3 installed in your Windows:

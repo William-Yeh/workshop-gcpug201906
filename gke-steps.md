@@ -44,6 +44,10 @@ If you're new to the GCP, do the following exercise to get used to the GCP envir
    ```
    % git clone https://github.com/William-Yeh/workshop-gcpug201906.git
    ```
+5. Set the `PROJECT_ID`
 
+    ```
+   % export PROJECT_ID="$(gcloud config get-value project -q)"
+   ```
 
 Now you're ready to run the workshop on GKE!
